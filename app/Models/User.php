@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -42,4 +43,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function isAdmin(): bool
+    {
+        return $this->role == UserRole::ADMIN->value;
+    }
+
+    public function isCitizen(): bool
+    {
+        return $this->role == UserRole::CITIZEN->value;
+    }
+
+    public function isVisitor(): bool
+    {
+        return $this->role == UserRole::VISITOR->value;
+    }
+
+    public function markAsCitizen(): void
+    {
+        $this->role = UserRole::CITIZEN->value;
+        // TODO: Hapus file foto KTP
+    }
 }
