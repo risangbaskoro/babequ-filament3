@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\CategoryResource;
+use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -20,38 +22,72 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
+    protected static string $id = 'admin';
+    protected static string $path = 'admin';
+
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id(static::$id)
+            ->path(static::$path)
             ->login()
-            ->colors([
-                'primary' => Color::Blue,
-            ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
-                Pages\Dashboard::class,
-            ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-            ])
-            ->middleware([
-                EncryptCookies::class,
-                AddQueuedCookiesToResponse::class,
-                StartSession::class,
-                AuthenticateSession::class,
-                ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
-                SubstituteBindings::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
-            ])
-            ->authMiddleware([
-                Authenticate::class,
-            ]);
+            ->colors($this->getColors())
+            ->resources($this->getResources())
+            ->pages($this->getPages())
+            ->widgets($this->getWidgets())
+            ->middleware($this->getMiddleware())
+            ->authMiddleware($this->getAuthMiddleware())
+            ->topNavigation();
+    }
+
+    protected function getColors(): array
+    {
+        return [
+            'primary' => Color::Blue,
+        ];
+    }
+
+    protected function getResources(): array
+    {
+        return [
+            CategoryResource::class,
+        ];
+    }
+
+    protected function getPages(): array
+    {
+        return [
+            Pages\Dashboard::class,
+        ];
+    }
+
+    protected function getWidgets(): array
+    {
+        return [
+            Widgets\AccountWidget::class,
+        ];
+    }
+
+    protected function getMiddleware(): array
+    {
+        return [
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            AuthenticateSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+            SubstituteBindings::class,
+            DisableBladeIconComponents::class,
+            DispatchServingFilamentEvent::class,
+        ];
+    }
+
+    public function getAuthMiddleware(): array
+    {
+        return [
+            Authenticate::class,
+        ];
     }
 }
