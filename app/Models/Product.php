@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
-    // use HasFactory;
+     use HasFactory;
+
     public function scopeApproved(EloquentBuilder $query): void
     {
         $query->where('status', ProductStatus::APPROVED);
