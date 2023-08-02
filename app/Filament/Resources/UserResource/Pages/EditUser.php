@@ -17,7 +17,7 @@ class EditUser extends EditRecord
         }
 
         return [
-            Actions\DeleteAction::make()
+            Actions\DeleteAction::make(),
         ];
     }
 }

@@ -4,10 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Enums\ProductStatus;
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Category;
 use App\Models\Product;
-use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -17,13 +15,12 @@ use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
 
     public static function form(Form $form): Form
@@ -38,7 +35,7 @@ class ProductResource extends Resource
                     ->disabled(function (Page $livewire) {
                         return $livewire instanceof Pages\CreateProduct;
                     })
-                    ->disabled(!auth()->user()->isAdmin())
+                    ->disabled(! auth()->user()->isAdmin())
                     ->default(1)
                     ->label('Status')
                     ->columnSpan('full'),
@@ -48,7 +45,7 @@ class ProductResource extends Resource
                     ->afterStateUpdated(function (callable $set, callable $get, $state) {
                         $slug = Str::slug($state);
                         if (static::getModel()::where('slug', $slug)->exists()) {
-                            $slug = Str::slug($slug . '-' . Str::lower(Str::random(4)));
+                            $slug = Str::slug($slug.'-'.Str::lower(Str::random(4)));
                             $set('slug', $slug);
                         } else {
                             $set('slug', $slug);

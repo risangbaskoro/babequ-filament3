@@ -4,14 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Enums\UserRole;
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Components\Radio;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
@@ -19,9 +15,7 @@ use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -41,7 +35,7 @@ class UserResource extends Resource
                     ->options(UserRole::toArray())
                     ->inline()
                     ->label('Role')
-                    ->disabled(fn(?Model $record): bool => !is_null($record) && $record === auth()->user()),
+                    ->disabled(fn (?Model $record): bool => ! is_null($record) && $record === auth()->user()),
             ]);
     }
 
@@ -58,8 +52,8 @@ class UserResource extends Resource
                         TextColumn::make('role')
                             ->sortable()
                             ->badge()
-                            ->formatStateUsing(fn(string $state): string => UserRole::from($state)->name)
-                            ->color(fn(int $state): string => match ($state) {
+                            ->formatStateUsing(fn (string $state): string => UserRole::from($state)->name)
+                            ->color(fn (int $state): string => match ($state) {
                                 1 => 'gray',
                                 2 => 'primary',
                                 3 => 'success',
@@ -76,7 +70,7 @@ class UserResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('role')
                     ->multiple()
-                    ->options(UserRole::toArray())
+                    ->options(UserRole::toArray()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -87,7 +81,7 @@ class UserResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->checkIfRecordIsSelectableUsing(fn(Model $record): bool => $record->isNot(auth()->user()))
+            ->checkIfRecordIsSelectableUsing(fn (Model $record): bool => $record->isNot(auth()->user()))
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
             ]);

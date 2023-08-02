@@ -5,7 +5,6 @@ namespace App\Providers\Filament;
 use App\Filament\Resources\CategoryResource;
 use App\Filament\Resources\ProductResource;
 use App\Filament\Resources\UserResource;
-use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -25,6 +24,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 class AdminPanelProvider extends PanelProvider
 {
     protected static string $id = 'admin';
+
     protected static string $path = 'admin';
 
     public function panel(Panel $panel): Panel
