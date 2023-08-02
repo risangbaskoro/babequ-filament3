@@ -71,13 +71,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail, Can
 
     public function canAccessPanel(Panel $panel): bool
     {
-        // TODO: Implement canAccessPanel() method.
-        return true;
-
-        //return match (true) {
-        //    $panel->getId() == 'admin' && $this->isAdmin() => true,
-        //    $panel->getId() == 'dashboard' && $this->isCitizen() => true,
-        //    default => false,
-        //};
+        return match (true) {
+            $panel->getId() == 'admin' && $this->isAdmin(), $panel->getId() == 'citizen' && $this->isCitizen() => true,
+            default => false,
+        };
     }
 }
