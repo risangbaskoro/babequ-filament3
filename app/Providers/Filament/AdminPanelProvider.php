@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Resources\CategoryResource;
 use App\Filament\Resources\ProductResource;
+use App\Filament\Resources\UserResource;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -54,6 +55,7 @@ class AdminPanelProvider extends PanelProvider
         return [
             ProductResource::class,
             CategoryResource::class,
+            UserResource::class,
         ];
     }
 
