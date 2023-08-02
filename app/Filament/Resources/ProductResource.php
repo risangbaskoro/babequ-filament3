@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class ProductResource extends Resource
@@ -24,6 +25,27 @@ class ProductResource extends Resource
     protected static ?string $navigationLabel = 'Produk';
     protected static ?string $label = 'Produk';
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->isAdmin()) {
+            return parent::getEloquentQuery();
+        }
+
+        return parent::getEloquentQuery()
+            ->where('user_id', auth()->id());
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        $user = auth()->user();
+
+        if ($user->isAdmin()) {
+            return 'Semua Produk';
+        } else {
+            return 'Produk Saya';
+        }
+    }
 
     public static function form(Form $form): Form
     {
