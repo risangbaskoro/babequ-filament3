@@ -24,7 +24,7 @@ use Illuminate\Support\Str;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bolt';
 
     public static function form(Form $form): Form
     {
@@ -110,13 +110,24 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('price')
+                    ->label('Harga')
+                    ->money('IDR'),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Kategori')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
