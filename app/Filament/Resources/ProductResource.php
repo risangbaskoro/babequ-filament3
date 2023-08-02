@@ -21,6 +21,8 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
+    protected static ?string $navigationLabel = 'Produk';
+    protected static ?string $label = 'Produk';
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
 
     public static function form(Form $form): Form
